@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/phucthinh-gentour/static/css/main.e6c13ad2.css",
+    "main.js": "/phucthinh-gentour/static/js/main.af6bf888.js",
+    "index.html": "/phucthinh-gentour/index.html",
+    "main.e6c13ad2.css.map": "/phucthinh-gentour/static/css/main.e6c13ad2.css.map",
+    "main.af6bf888.js.map": "/phucthinh-gentour/static/js/main.af6bf888.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.af6bf888.js"
+  ]
+}
