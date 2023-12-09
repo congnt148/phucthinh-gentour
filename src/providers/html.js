@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+const FristHTML = `<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
@@ -14,8 +14,12 @@
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
   </head>
-  <body>
-    <table style="border-collapse: collapse; border: none; width: 100%">
+  <body>`
+const EndHTML = `</body>
+</html>`
+
+const HeaderHTML = (dateString, meal, location) => {
+  return `<table style="border-collapse: collapse; border: none; width: 100%">
       <tbody>
         <tr>
           <td rowspan="2" style="padding: 0cm 0cm 0cm 0cm">
@@ -87,14 +91,14 @@
             </p>
           </td>
           <td style="padding: 0cm">
-            <p style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0">NGÀY 02:</p>
+            <p style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0">${dateString}</p>
           </td>
 
           <td>
             <p
-              style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0; text-align: right"
+              style="font-size: 15px;  margin-block-end: 0; margin-block-start: 0; text-align: right"
             >
-              Các bữa ăn: Bữa sáng, trưa và tối
+              Các bữa ăn: ${meal}
             </p>
           </td>
         </tr>
@@ -153,7 +157,7 @@
               >
             </p>
           </td>
-          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.85pt; width: 100%" colspan="2">
+          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.85pt;width: 100%" colspan="2">
             <p
               style="
                 margin-top: 0cm;
@@ -170,15 +174,88 @@
                 ></strong
               ><strong
                 ><span style="font-size: 20px; line-height: 115%; font-family: Roboto; color: white"
-                  >LANG BIANG</span
+                  >${location}</span
                 ></strong
               >
             </p>
           </td>
         </tr>
       </tbody>
+    </table>`
+}
+
+const TimeLineHTML = (time1, time2, value1, value2) => {
+  return `
+    <br />
+    <table style="border-collapse: collapse; border: none; width: 100%;">
+      <tbody>
+        <tr>
+          <td style="width: 43pt; vertical-align: text-top">
+            <p
+              style="
+                line-height: 150%;
+                font-size: 16px;
+                color: #404040;
+                margin-top: 0pt;
+                margin-bottom: 0pt;
+                font-weight: bold;
+              "
+            >
+              ${time1}
+            </p>
+          </td>
+          <td>
+            <p
+              style="
+                line-height: 150%;
+                font-size: 16px;
+                text-align: justify;
+                color: #404040;
+                margin-top: 0pt;
+                margin-bottom: 0pt;
+              "
+            >
+              ${value1}
+            </p>
+          </td>
+        </tr>
+        <tr style="margin-top: 18pt">
+          <td style="width: 43pt; vertical-align: top; display: flex; flex-direction: column; padding: 0">
+            <p
+              style="
+                line-height: 150%;
+                font-size: 16px;
+                color: #404040;
+                margin-top: 0pt;
+                margin-bottom: 0pt;
+                font-weight: bold;
+              "
+            >
+              ${time2}
+            </p>
+          </td>
+          <td>
+            <p
+              style="
+                line-height: 150%;
+                font-size: 16px;
+                text-align: justify;
+                color: #404040;
+                margin-top: 0pt;
+                margin-bottom: 0pt;
+              "
+            >
+              ${value2}
+            </p>
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <table style="border-collapse: collapse; border: none; width: 100%; margin-top: 18pt">
+`
+}
+
+const TemplateTwo = `
+    <table style="border-collapse: collapse; border: none; width: 100%; margin-top: 30pt">
       <tbody>
         <tr>
           <td style="width: 43pt; vertical-align: text-top">
@@ -242,7 +319,7 @@
             </p>
 
             <ul
-              style="list-style-type: square; padding-inline-start: 0pt; margin-block-start: 0px; margin-block-end: 0px"
+              style="list-style-type: square; padding-inline-start: 0pt; margin-block-start: 0px; margin-block-end: 0px; margin-left: 0px; margin-right: -20pt"
             >
               <li>
                 <p
@@ -279,5 +356,6 @@
         </tr>
       </tbody>
     </table>
-  </body>
-</html>
+`
+
+export { TemplateTwo, FristHTML, EndHTML, HeaderHTML, TimeLineHTML }

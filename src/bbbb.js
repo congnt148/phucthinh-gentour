@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+const TemplateB = `<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
@@ -86,16 +86,23 @@
               </strong>
             </p>
           </td>
-          <td style="padding: 0cm">
-            <p style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0">NGÀY 02:</p>
-          </td>
-
-          <td>
-            <p
-              style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0; text-align: right"
-            >
-              Các bữa ăn: Bữa sáng, trưa và tối
-            </p>
+          <td style="padding: 0cm; height: 2.85pt">
+            <table style="border-collapse: collapse; border: none; width: 100%; height: 40pt">
+              <!-- <tbody>
+                <tr>
+                  <td style="padding: 0cm; vertical-align: top">
+                    <p style="font-size: 15px; font-weight: bold; margin-block-end: 0; margin-block-start: 0">
+                      NGÀY 02:
+                    </p>
+                  </td>
+                  <td style="padding: 0cm; vertical-align: top">
+                    <p style="font-size: 15px; margin-block-end: 0; margin-block-start: 0; text-align: right">
+                      Các bữa ăn: Bữa sáng, trưa và tối
+                    </p>
+                  </td>
+                </tr>
+              </tbody> -->
+            </table>
           </td>
         </tr>
         <tr>
@@ -153,7 +160,7 @@
               >
             </p>
           </td>
-          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.85pt; width: 100%" colspan="2">
+          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.85pt">
             <p
               style="
                 margin-top: 0cm;
@@ -170,7 +177,7 @@
                 ></strong
               ><strong
                 ><span style="font-size: 20px; line-height: 115%; font-family: Roboto; color: white"
-                  >LANG BIANG</span
+                  >ĐÀ LẠT - NHÀ THỜ DOMAIN DE MARI - ĐỈNH LANG BIANG</span
                 ></strong
               >
             </p>
@@ -281,3 +288,6 @@
     </table>
   </body>
 </html>
+`
+
+export default TemplateB

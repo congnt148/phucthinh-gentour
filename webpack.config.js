@@ -4,6 +4,7 @@ module.exports = {
       fs: false,
       os: false,
       path: false,
-    },
-  },
-};
+      url: false
+    }
+  }
+}
