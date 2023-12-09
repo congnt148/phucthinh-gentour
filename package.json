@@ -1,4 +1,5 @@
 {
+  "homepage": "https://congnt148.github.io/phucthinh-gentour",
   "browser": {
     "fs": false,
     "os": false,
@@ -8,7 +9,6 @@
   "name": "demo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://congnt148.github.io/phucthinh-gentour/",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
