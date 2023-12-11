@@ -184,13 +184,24 @@ const HeaderHTML = (dateString, meal, location) => {
     </table>`
 }
 
+const StartTimeLineHTML = () => {
+  return `<br />
+    <table style="border-collapse: collapse; border: none; width: 100%;">
+      <tbody>`
+}
+
+const EndTimeLineHTML = () => {
+  return ` </tbody>
+    </table>`
+}
+
 const TimeLineHTML = (time1, time2, value1, value2) => {
   return `
     <br />
     <table style="border-collapse: collapse; border: none; width: 100%;">
       <tbody>
         <tr>
-          <td style="width: 43pt; vertical-align: text-top">
+          <td style="width: 38pt; vertical-align: text-top">
             <p
               style="
                 line-height: 150%;
@@ -220,7 +231,7 @@ const TimeLineHTML = (time1, time2, value1, value2) => {
           </td>
         </tr>
         <tr style="margin-top: 18pt">
-          <td style="width: 43pt; vertical-align: top; display: flex; flex-direction: column; padding: 0">
+          <td style="width: 38pt; vertical-align: top; display: flex; flex-direction: column; padding: 0">
             <p
               style="
                 line-height: 150%;
@@ -247,6 +258,40 @@ const TimeLineHTML = (time1, time2, value1, value2) => {
             >
               ${value2}
             </p>
+          </td>
+        </tr>
+        <tr style="margin-top: 18pt">
+          <td colspan="2">
+            <ul type="square" style="margin: 0pt; 
+             padding-left: 0pt;">
+              <li
+                class="ListParagraph"
+                style="
+                  margin-top: 3pt;
+                  margin-left: 13pt;
+                  margin-bottom: 3pt;
+                  padding-left: 8pt;
+                  -aw-font-family: Roboto;
+                  -aw-font-weight: normal;
+                  -aw-number-format: ;
+                "
+              >
+                <p
+                  style="
+                    line-height: 150%;
+                    font-size: 16px;
+                    text-align: justify;
+                    color: #404040;
+                    margin-top: 0pt;
+                    margin-bottom: 0pt;
+                    font-family: Roboto;
+                  "
+                >
+                  Trên đường đi, đoàn dùng bữa sáng tại nhà hàng Cao Phát. Đoàn sinh hoạt vui chơi trên xe, cùng HDV tìm
+                  hiểu thông tin tuyến điểm tại những vùng đất mà đoàn đi qua.
+                </p>
+              </li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -358,4 +403,4 @@ const TemplateTwo = `
     </table>
 `
 
-export { TemplateTwo, FristHTML, EndHTML, HeaderHTML, TimeLineHTML }
+export { TemplateTwo, FristHTML, EndHTML, HeaderHTML, TimeLineHTML, StartTimeLineHTML, EndTimeLineHTML }
