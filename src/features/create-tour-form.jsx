@@ -7,61 +7,98 @@ import Select from '@mui/material/Select'
 import Typography from '@mui/material/Typography'
 import fileSaver from 'file-saver'
 import htmlDocx from 'html-docx-js/dist/html-docx'
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { EndHTML, FristHTML, HeaderHTML, StartTimeLineHTML, EndTimeLineHTML } from '../providers/html'
-import { TOURIST_ATTRACTION } from '../providers/touristAttraction'
+import { EndHTML, EndTimeLineHTML, FristHTML, HeaderHTML, StartTimeLineHTML } from '../providers/html'
+import { TIME } from '../providers/touristAttraction'
+import AddTimeLineField from './add-timeline-field'
 
 const defaultValues = {
-  title: '',
-  timeline: [
-    {
-      time: '',
-      address: '',
-      addressContent: ''
-    }
-  ]
+  tourName: '',
+  timeDay: 3,
+  transport: '',
+  stay: '',
+  location: [],
+  days: []
 }
 
 const schema = yup.object({
-  title: yup.string().required('Vui lòng nhập tiêu đề ngày 1'),
-  timeline: yup
-    .array(
-      yup.object({
-        time: yup.string(),
-        address: yup.string(),
-        addressContent: yup.string().required('Vui lòng nhập nội dung!')
-      })
-    )
-    .min(1, 'Vui lòng tạo ít nhất một lộ trình')
+  tourName: yup.string().required('Vui lòng nhập tên chương trình'),
+  timeDay: yup.number().required('Vui lòng chọn thời gian'),
+  transport: yup.string().required('Vui lòng nhập phương tiện'),
+  stay: yup.string().required('Vui lòng nhập lưu trú'),
+  // location: yup.array(yup.string()).min(1, 'Vui lòng chọn ít nhất một điểm đến'),
+  location: yup.array(yup.string()),
+  days: yup.array(
+    yup.object({
+      dayTitle: yup.string().required('Vui lòng nhập tiêu đề'),
+      meal: yup.object({
+        breakfast: yup.boolean(),
+        lunch: yup.boolean(),
+        dinner: yup.boolean()
+      }),
+      timeline: yup
+        .array(
+          yup.object({
+            time: yup.string(),
+            address: yup.string(),
+            addressContent: yup.string().required('Vui lòng nhập nội dung!')
+          })
+        )
+        .min(1, 'Vui lòng tạo ít nhất một lộ trình')
+    })
+  )
 })
 
 const CreateTourForm = () => {
-  const [meal, setMeal] = useState({
-    breakfast: false,
-    lunch: false,
-    dinner: false
-  })
+  schema
+    .validate(defaultValues)
+    .then(() => console.log('Validation successful'))
+    .catch(err => console.error('Validation failed:', err))
 
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors }
-  } = useForm({
+  const { control, handleSubmit, getValues, watch, setValue, formState } = useForm({
     defaultValues: defaultValues,
     resolver: yupResolver(schema)
   })
-  const { fields, append, replace } = useFieldArray({
+
+  const { errors } = formState
+  const {
+    fields,
+    append: appendDays,
+    replace: replaceDays,
+    remove
+  } = useFieldArray({
     control,
-    name: 'timeline'
+    name: 'days'
   })
 
+  useEffect(() => {
+    const countDay = watch('timeDay')
+
+    remove()
+    for (let i = 0; i < countDay; i++) {
+      appendDays({
+        dayTitle: '',
+        meal: {
+          breakfast: false,
+          lunch: false,
+          dinner: false
+        },
+        timeline: [
+          {
+            time: '',
+            address: '',
+            addressContent: ''
+          }
+        ]
+      })
+    }
+  }, [watch('timeDay'), replaceDays])
+
   const onSubmit = data => {
-    let doc = FristHTML + HeaderHTML('NGÀY 01:', getMealText(), data.title)
-    doc += StartTimeLineHTML() + handleGetTimeLine(data.timeline) + EndTimeLineHTML() + EndHTML
-    debugger
+    let doc = FristHTML + handleGetDays(data.days) + EndHTML
+
     var converted = htmlDocx.asBlob(doc, {
       margins: {
         header: 0,
@@ -73,21 +110,36 @@ const CreateTourForm = () => {
         footer: 0
       }
     })
+
     fileSaver.saveAs(converted, 'CHUONG-TRINH-TOUR.docx')
   }
 
+  const handleGetDays = days => {
+    let htmlDays = ``
+    for (let i = 0; i < days.length; i++) {
+      let day = days[i]
+      htmlDays += HeaderHTML(
+        `NGÀY 0${i + 1}:`,
+        getMealText(day.meal.breakfast, day.meal.lunch, day.meal.dinner),
+        day.dayTitle
+      )
+      htmlDays += handleGetTimeLine(day.timeline)
+    }
+
+    return htmlDays
+  }
+
   const handleGetTimeLine = timeline => {
-    let html = `<table style="border-collapse: collapse; border: none; width: 100%; margin-top: 30pt">
+    let html =
+      StartTimeLineHTML() +
+      `<table style="border-collapse: collapse; border: none; width: 100%; margin-top: 30pt">
       <tbody>`
 
     for (let i = 0; i < timeline.length; i++) {
       if (i === 0 && timeline[i]?.time === '') {
         html += `<tr>
-          <td style="width: 43pt; vertical-align: text-top">
-          </td>
-          <td >
-            <p
-              style="
+          <td style="width: 43pt; vertical-align: text-top"></td>
+          <td ><p style="
                 line-height: 150%;
                 font-size: 16px;
                 text-align: justify;
@@ -96,7 +148,7 @@ const CreateTourForm = () => {
                 margin-bottom: 0pt;
               "
             >
-              ${timeline[i].addressContent}
+              ${timeline[i].addressContent.trim()}
             </p>
           </td>
         </tr>`
@@ -114,7 +166,7 @@ const CreateTourForm = () => {
                 font-weight: bold;
               "
             >
-              ${timeline[i].time}
+              ${timeline[i].time.trim()}
             </p>
           </td>
           <td>
@@ -128,7 +180,7 @@ const CreateTourForm = () => {
                 margin-bottom: 0pt;
               "
             >
-              ${timeline[i].addressContent}
+              ${timeline[i].addressContent.trim()}
             </p>
           </td>
         </tr>`
@@ -137,8 +189,7 @@ const CreateTourForm = () => {
         if ((timeline[i - 1]?.time ?? '') !== '') {
           html += `
           <tr >
-          
-          <td colspan="2" style="padding-left: 9pt">
+          <td colspan="2" >
             <ul
               style=" list-style-type: square;
               margin-block-end: 0px;
@@ -147,10 +198,11 @@ const CreateTourForm = () => {
             <li  
             style="
                   margin-top: 3pt;
+                  margin-left: 10.84pt;
                   margin-bottom: 3pt;
                   text-align: justify;
                   line-height: 150%;
-                  padding-left: 10pt;
+                  padding-left: 3.71pt;
                   -aw-number-format: ;
                 ">
                 <p
@@ -163,7 +215,7 @@ const CreateTourForm = () => {
                     margin-bottom: 0pt;
                   "
                 >
-                  ${timeline[i].addressContent}
+                  ${timeline[i].addressContent.trim()}
                 </p>
               </li>`
           continue
@@ -189,7 +241,7 @@ const CreateTourForm = () => {
                     margin-bottom: 0pt;
                   "
                 >
-                  ${timeline[i].addressContent}
+                  ${timeline[i].addressContent.trim()}
                 </p>
                 </li>
              `
@@ -198,16 +250,12 @@ const CreateTourForm = () => {
 
         if ((timeline[i]?.time ?? '') === '' && ((timeline[i + 1]?.time ?? '') !== '' || i === timeline.length - 1)) {
           html += ` <li  style="
-                  margin-top: 3pt;
+                   margin-top: 3pt;
                   margin-left: 10.84pt;
                   margin-bottom: 3pt;
                   text-align: justify;
                   line-height: 150%;
                   padding-left: 3.71pt;
-                  font-family: serif;
-                  font-size: 12pt;
-                  -aw-font-family: Roboto;
-                  -aw-font-weight: normal;
                   -aw-number-format: ;
                 ">
                 <p
@@ -220,7 +268,7 @@ const CreateTourForm = () => {
                     margin-bottom: 0pt;
                   "
                 >
-                    ${timeline[i].addressContent}
+                    ${timeline[i].addressContent.trim()}
                 </p>
               </li>
               </ul>
@@ -233,14 +281,12 @@ const CreateTourForm = () => {
     html += `</tbody>
     </table>`
 
-    debugger
+    html += EndTimeLineHTML()
 
     return html
   }
 
-  const getMealText = () => {
-    const { breakfast, lunch, dinner } = meal
-
+  const getMealText = (breakfast, lunch, dinner) => {
     if (breakfast && lunch && dinner) {
       return 'Bửa sáng, bửa trưa và bửa tối'
     } else if (!breakfast && lunch && dinner) {
@@ -264,9 +310,6 @@ const CreateTourForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, backgroundColor: 'white' }}>
         <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
-          <Typography component='h1' variant='h6' align='left' color={'#0a5da8'}>
-            Nhập tên chương trình
-          </Typography>
           <Button
             variant='contained'
             type='submit'
@@ -276,7 +319,7 @@ const CreateTourForm = () => {
           </Button>
         </Box>
 
-        <Box mt={2}>
+        <Box mt={2} fullWidth>
           <Controller
             fullWidth
             errors={errors}
@@ -284,190 +327,195 @@ const CreateTourForm = () => {
               <TextField
                 {...field}
                 inputProps={{
-                  style: { paddingTop: 10, paddingBottom: 10, fontWeight: 'bold', color: '#0a5da8' }
+                  style: { paddingTop: 10, paddingBottom: 10, fontWeight: 'bold', color: '#2D3B63' }
                 }}
                 fullWidth
                 error={!!error}
-                InputProps={{
-                  startAdornment: (
-                    <Typography align='left' color={'#0a5da8'} sx={{ width: 80, fontSize: 17, fontWeight: 'bold' }}>
-                      NGÀY 1:
-                    </Typography>
-                  )
-                }}
                 helperText={error ? error.message : null}
-                placeholder='NHẬP TIÊU ĐỀ'
+                placeholder='Nhập tên chương trình'
               />
             )}
-            name={'title'}
+            name={'tourName'}
             control={control}
           />
         </Box>
-        <Box
-          sx={{
-            flexDirection: 'row',
-            marginTop: 1,
-            marginLeft: 1,
-            display: 'flex',
-            alignContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Typography color={'#0a5da8'} fontWeight='600'>
-            Bửa ăn:
+        <Box mt={2} sx={{ flexDirection: 'row', display: 'flex', width: '100%' }}>
+          <Box sx={{ width: '100%' }}>
+            <Typography color={'#2D3B63'} fontWeight='400'>
+              Thời gian:
+            </Typography>
+            <Controller
+              render={({ field: { value, onChange } }) => (
+                <Select
+                  variant='standard'
+                  fullWidth
+                  value={value}
+                  onChange={event => {
+                    onChange(event.target.value)
+                  }}
+                  sx={{
+                    '.MuiInputBase-input': {
+                      paddingTop: '10px',
+                      paddingBottom: '10px'
+                    }
+                  }}
+                >
+                  {TIME.map(item => (
+                    <MenuItem key={item.id} value={item.daytime}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+              name={`timeDay`}
+              control={control}
+            />
+          </Box>
+          <Box width={100} />
+          <Box sx={{ width: '100%' }}>
+            <Typography color={'#2D3B63'} fontWeight='400'>
+              Phương tiện:
+            </Typography>
+            <Controller
+              fullWidth
+              errors={errors}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  variant='standard'
+                  inputProps={{
+                    style: { paddingTop: 10, paddingBottom: 10, fontWeight: 'bold', color: '#2D3B63' }
+                  }}
+                  fullWidth
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  placeholder='Vd: Máy bay, ô tô'
+                />
+              )}
+              name={'transport'}
+              control={control}
+            />
+          </Box>
+          <Box width={100} />
+          <Box sx={{ width: '100%' }}>
+            <Typography color={'#2D3B63'} fontWeight='400'>
+              Lưu trú:
+            </Typography>
+            <Controller
+              fullWidth
+              errors={errors}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  variant='standard'
+                  inputProps={{
+                    style: { paddingTop: 10, paddingBottom: 10, fontWeight: 'bold', color: '#2D3B63' }
+                  }}
+                  fullWidth
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  placeholder='Vd: Resort 3 sao'
+                />
+              )}
+              name={'stay'}
+              control={control}
+            />
+          </Box>
+          <Box width={300} />
+        </Box>
+        <Box mt={2}>
+          <Typography color={'#2D3B63'} fontWeight='400'>
+            Điểm đến:
           </Typography>
-          <FormControlLabel
-            sx={{ marginLeft: 1 }}
-            control={
-              <Checkbox
-                checked={meal.breakfast}
-                onChange={() => {
-                  let newMeal = { ...meal, breakfast: !meal.breakfast }
-                  setMeal(newMeal)
-                }}
-                name='Bửa sáng'
-              />
-            }
-            label='Bửa sáng'
-          />
-          <FormControlLabel
-            sx={{ marginLeft: 1 }}
-            control={
-              <Checkbox
-                checked={meal.lunch}
-                onChange={() => {
-                  let newMeal = { ...meal, lunch: !meal.lunch }
-                  setMeal(newMeal)
-                }}
-                name='Bửa trưa'
-              />
-            }
-            label='Bửa trưa'
-          />
-          <FormControlLabel
-            sx={{ marginLeft: 1 }}
-            control={
-              <Checkbox
-                checked={meal.dinner}
-                onChange={() => {
-                  let newMeal = { ...meal, dinner: !meal.dinner }
-                  setMeal(newMeal)
-                }}
-                name='Bửa tối'
-              />
-            }
-            label='Bửa tối'
-          />
         </Box>
 
-        {fields.map((item, index) => (
-          <Box key={item.id} sx={{ flexDirection: 'row', display: 'flex', marginTop: 4 }}>
-            <Box sx={{ flexDirection: 'column', display: 'flex', width: 300 }}>
-              <Controller
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    inputProps={{
-                      style: { paddingTop: 10, paddingBottom: 10 }
-                    }}
-                    placeholder='Thời gian'
-                  />
-                )}
-                name={`timeline.${index}.time`}
-                control={control}
-              />
-              <Box mt={1}>
+        {fields.map((item, index) => {
+          return (
+            <Box key={index}>
+              <Box mt={2}>
                 <Controller
-                  render={({ field: { onChange, value } }) => (
-                    <Select
+                  fullWidth
+                  errors={errors}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      inputProps={{
+                        style: { paddingTop: 10, paddingBottom: 10, fontWeight: 'bold', color: '#2D3B63' }
+                      }}
                       fullWidth
-                      value={value}
-                      sx={{
-                        '.MuiInputBase-input': {
-                          paddingTop: '10px',
-                          paddingBottom: '10px'
-                        }
+                      error={!!error}
+                      InputProps={{
+                        startAdornment: (
+                          <Typography
+                            align='left'
+                            color={'#2D3B63'}
+                            sx={{ width: 80, fontSize: 17, fontWeight: 'bold' }}
+                          >
+                            {`NGÀY ${index + 1}:`}
+                          </Typography>
+                        )
                       }}
-                      onChange={event => {
-                        let item = TOURIST_ATTRACTION.find(i => i.id === event.target.value)
-                        onChange(event.target.value)
-                        if (item) {
-                          let newTimeline = getValues('timeline')
-                          newTimeline[index].addressContent = item?.content ?? ''
-                          // setValue('timeline', newTimeline)
-                          replace(newTimeline)
-                        } else {
-                          let newTimeline = getValues('timeline')
-                          newTimeline[index].addressContent = ''
-                          replace(newTimeline)
-                          // setValue('timeline', newTimeline)
-                        }
-                      }}
-                      displayEmpty
-                      inputProps={{ 'aria-label': 'Without label' }}
-                    >
-                      <MenuItem value=''>
-                        <em>Trống</em>
-                      </MenuItem>
-                      {TOURIST_ATTRACTION.map(item => (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                      helperText={error ? error.message : null}
+                      placeholder='NHẬP TIÊU ĐỀ'
+                    />
                   )}
-                  name={`timeline.${index}.address`}
+                  name={`days.${index}..dayTitle`}
                   control={control}
                 />
               </Box>
-            </Box>
-            <Box ml={1} sx={{ width: '100%' }}>
-              <Controller
-                control={control}
-                name={`timeline.${index}.addressContent`}
-                render={({ field, fieldState: { error } }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      multiline
-                      sx={{
-                        padding: 0,
-                        '.MuiOutlinedInput-root': {
-                          paddingTop: 0,
-                          paddingBottom: 1
-                        }
-                      }}
-                      rows={3}
-                      fullWidth
-                      error={!!error}
-                      helperText={error ? error.message : null}
-                      placeholder='Phần nhập nội dung'
-                      inputProps={{
-                        style: { paddingTop: 10, paddingBottom: 10 }
-                      }}
-                    />
-                  )
-                }}
-              />
-            </Box>
-          </Box>
-        ))}
 
-        <Box sx={{ flexDirection: 'row', display: 'flex', marginTop: 2, justifyContent: 'center' }}>
-          <Button
-            variant='contained'
-            onClick={() => {
-              append({
-                time: '',
-                address: '',
-                addressContent: ''
-              })
-            }}
-            sx={{ color: 'white', textTransform: 'capitalize', backgroundColor: '#ff6600' }}
-          >
-            Thêm
-          </Button>
-        </Box>
+              <Box
+                sx={{
+                  flexDirection: 'row',
+                  marginTop: 1,
+                  marginLeft: 1,
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Typography color={'#2D3B63'} fontWeight='600'>
+                  Bửa ăn:
+                </Typography>
+                <FormControlLabel
+                  sx={{ marginLeft: 1 }}
+                  control={
+                    <Controller
+                      render={({ field }) => <Checkbox {...field} />}
+                      name={`days.${index}.meal.breakfast`}
+                      control={control}
+                      label='Bửa sáng'
+                    />
+                  }
+                  label='Bửa sáng'
+                />
+                <FormControlLabel
+                  sx={{ marginLeft: 1 }}
+                  control={
+                    <Controller
+                      render={({ field }) => <Checkbox {...field} />}
+                      name={`days.${index}.meal.lunch`}
+                      control={control}
+                    />
+                  }
+                  label='Bửa trưa'
+                />
+                <FormControlLabel
+                  sx={{ marginLeft: 1 }}
+                  control={
+                    <Controller
+                      render={({ field }) => <Checkbox {...field} />}
+                      name={`days.${index}.meal.dinner`}
+                      control={control}
+                    />
+                  }
+                  label='Bửa tối'
+                />
+              </Box>
+              <AddTimeLineField dayIndex={index} control={control} getValues={getValues} setValue={setValue} />
+            </Box>
+          )
+        })}
       </Paper>
     </form>
   )

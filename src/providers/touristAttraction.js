@@ -12,3 +12,41 @@ export const TOURIST_ATTRACTION = [
       'Khởi hành tham quan vườn hoa Cẩm Tú Cầu, là nơi hội tụ của những cánh đồng hoa Cẩm Tú Cầu bát ngát, loài hoa cánh mỏng manh, chen chúc kề vai nhau tạo thành từng chùm tròn đầy màu sắc, tượng trưng cho lòng biết ơn và những cảm xúc chân thành.'
   }
 ]
+
+export const TIME = [
+  {
+    id: 1,
+    daytime: 1,
+    title: '1 ngày 1 đêm'
+  },
+  {
+    id: 2,
+    daytime: 2,
+    title: '2 ngày 1 đêm'
+  },
+  {
+    id: 3,
+    daytime: 3,
+    title: '3 ngày 2 đêm'
+  },
+  {
+    id: 4,
+    daytime: 4,
+    title: '4 ngày 3 đêm'
+  },
+  {
+    id: 5,
+    daytime: 5,
+    title: '5 ngày 4 đêm'
+  },
+  {
+    id: 6,
+    daytime: 6,
+    title: '6 ngày 5 đêm'
+  },
+  {
+    id: 7,
+    daytime: 7,
+    title: '7 ngày 6 đêm'
+  }
+]
