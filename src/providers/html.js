@@ -11,20 +11,20 @@ const FristHTML = `<!DOCTYPE html>
         margin: 0;
         font-family: 'Roboto', sans-serif;
       }
-      .colspan-2-td-ul {
+      .colspan-2-td ul {
         list-style-type: square;
         margin-block-end: 0px;
         margin-block-start: 0pt;
-        padding-inline-start: 56pt;
+        padding-inline-start: 60pt; 
       }
-      .colspan-2-td-li {
+      .colspan-2-td li {
         margin-top: 3pt;
         margin-bottom: 3pt;
         text-align: justify;
         line-height: 150%;
         -aw-number-format: ;
       }
-      .colspan-2-td-p {
+      .colspan-2-td p {
         line-height: 150%;
         font-size: 16px;
         text-align: justify;
@@ -139,40 +139,38 @@ const HeaderHTML = (dateString, meal, location) => {
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
-                line-height: 115%;
                 font-size: 15px;">
               <strong>
-                <span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white">&nbsp;</span>
+                <span style="font-size: 20px; font-family: Roboto; color: white">&nbsp;</span>
               </strong>
             </p>
           </td>
-          <td style="width: 5.65pt; padding: 0cm; height: 2.85pt; vertical-align: top">
+          <td style="width: 5.65pt; padding: 0cm; height: 2.5pt; vertical-align: top">
             <p style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
-                line-height: 115%;
-                font-size: 15px;">
+                ">
               <strong>
                 <span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white">&nbsp;</span>
               </strong>
             </p>
           </td>
-          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.60pt;width: 100%" colspan="2">
+          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.5pt;width: 100%" colspan="2">
             <p
               style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
-                line-height: 100%;
-                font-size: 15px;">
+                font-size: 16px;
+                color: white;">
               <strong>
-                <span style="font-size: 20px; line-height: 100%; color: white">&nbsp;</span>
+                <span>&nbsp;</span>
               </strong>
               <strong>
-                <span style="font-size: 24px; line-height: 100%; color: white">${location}</span>
+                <span>${location}</span>
               </strong>
             </p>
           </td>

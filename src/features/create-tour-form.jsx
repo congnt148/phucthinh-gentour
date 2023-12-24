@@ -151,29 +151,29 @@ const CreateTourForm = () => {
 
   const onSubmit = (data) => {
       let doc = FristHTML + handleGetDays(data.days) + EndHTML;
-      var parser = new DOMParser();
-      var docu = parser.parseFromString(doc, "text/html"); 
-      var myDocx = generateDocx(docu);
-      saveAs(myDocx, "CHUONG-TRINH-TOUR.docx");
+      // var parser = new DOMParser();
+      // var docu = parser.parseFromString(doc, "text/html"); 
+      // var myDocx = generateDocx(docu);
+      // saveAs(myDocx, "CHUONG-TRINH-TOUR.docx");
       // var parser = new DOMParser();
       // var docu = parser.parseFromString(doc, "text/html"); 
 
       // convert all Images url to data base64
       // convertAllUrlImagesToBase64(docu);
 
-      // var converted = htmlDocx.asBlob(doc, {
-      //   margins: {
-      //     header: 0,
-      //     top: 850.39,
-      //     left: 850.39,
-      //     right: 567,
-      //     buttom: 567,
-      //     gutter: 0,
-      //     footer: 0
-      //   }
-      // });
+      var converted = htmlDocx.asBlob(doc, {
+        margins: {
+          header: 0,
+          top: 850.39,
+          left: 850.39,
+          right: 567,
+          buttom: 567,
+          gutter: 0,
+          footer: 0
+        }
+      });
 
-      // fileSaver.saveAs(converted, 'CHUONG-TRINH-TOUR.docx');
+      fileSaver.saveAs(converted, 'CHUONG-TRINH-TOUR.docx');
   };
 
   const handleGetDays = (days) => {
