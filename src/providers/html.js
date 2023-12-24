@@ -11,12 +11,31 @@ const FristHTML = `<!DOCTYPE html>
         margin: 0;
         font-family: 'Roboto', sans-serif;
       }
+      .colspan-2-td-ul {
+        list-style-type: square;
+        margin-block-end: 0px;
+        margin-block-start: 0pt;
+        padding-inline-start: 56pt;
+      }
+      .colspan-2-td-li {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        text-align: justify;
+        line-height: 150%;
+        -aw-number-format: ;
+      }
+      .colspan-2-td-p {
+        line-height: 150%;
+        font-size: 16px;
+        text-align: justify;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+      }
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
   </head>
   <body>`
-const EndHTML = `</body>
-</html>`
+const EndHTML = `</body></html>`
 
 const HeaderHTML = (dateString, meal, location) => {
   return `<table style="border-collapse: collapse; border: none; width: 100%">
@@ -86,7 +105,7 @@ const HeaderHTML = (dateString, meal, location) => {
               "
             >
               <strong>
-                <span style="font-size: 21px; line-height: 115%; font-family: Roboto">&nbsp;</span>
+                <span style="font-size: 21px; line-height: 115%">&nbsp;</span>
               </strong>
             </p>
           </td>
@@ -95,88 +114,66 @@ const HeaderHTML = (dateString, meal, location) => {
           </td>
 
           <td>
-            <p
-              style="font-size: 15px;  margin-block-end: 0; margin-block-start: 0; text-align: right"
-            >
+            <p style="font-size: 15px;  margin-block-end: 0; margin-block-start: 0; text-align: right">
               Các bữa ăn: ${meal}
             </p>
           </td>
         </tr>
         <tr>
           <td style="width: 5.65pt; padding: 0cm; height: 2.85pt; vertical-align: top">
-            <p
-              style="
+            <p style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
                 line-height: 115%;
-                font-size: 15px;
-              "
-            >
-              <strong
-                ><span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white"
-                  >&nbsp;</span
-                ></strong
-              >
+                font-size: 15px;">
+              <strong>
+                <span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white">&nbsp;</span>
+              </strong>
             </p>
           </td>
           <td style="width: 4.25pt; background: rgb(245, 134, 52); padding: 0cm; height: 2.85pt; vertical-align: top">
-            <p
-              style="
+            <p style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
                 line-height: 115%;
-                font-size: 15px;
-              "
-            >
-              <strong
-                ><span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white"
-                  >&nbsp;</span
-                ></strong
-              >
+                font-size: 15px;">
+              <strong>
+                <span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white">&nbsp;</span>
+              </strong>
             </p>
           </td>
           <td style="width: 5.65pt; padding: 0cm; height: 2.85pt; vertical-align: top">
-            <p
-              style="
+            <p style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
                 line-height: 115%;
-                font-size: 15px;
-              "
-            >
-              <strong
-                ><span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white"
-                  >&nbsp;</span
-                ></strong
-              >
+                font-size: 15px;">
+              <strong>
+                <span style="font-size: 27px; line-height: 115%; font-family: Roboto; color: white">&nbsp;</span>
+              </strong>
             </p>
           </td>
-          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.85pt;width: 100%" colspan="2">
+          <td style="background: #f58634; padding: 0cm 0cm 0cm 0cm; height: 2.60pt;width: 100%" colspan="2">
             <p
               style="
                 margin-top: 0cm;
                 margin-right: 0cm;
                 margin-bottom: 0cm;
                 margin-left: 0cm;
-                line-height: 115%;
-                font-size: 15px;
-              "
-            >
-              <strong
-                ><span style="font-size: 20px; line-height: 115%; font-family: Roboto; color: white"
-                  >&nbsp;</span
-                ></strong
-              ><strong
-                ><span style="font-size: 20px; line-height: 115%; font-family: Roboto; color: white"
-                  >${location}</span
-                ></strong
-              >
+                line-height: 100%;
+                font-size: 15px;">
+              <strong>
+                <span style="font-size: 20px; line-height: 100%; color: white">&nbsp;</span>
+              </strong>
+              <strong>
+                <span style="font-size: 24px; line-height: 100%; color: white">${location}</span>
+              </strong>
             </p>
           </td>
         </tr>
@@ -184,223 +181,6 @@ const HeaderHTML = (dateString, meal, location) => {
     </table>`
 }
 
-const StartTimeLineHTML = () => {
-  return `<br />
-    <table style="border-collapse: collapse; border: none; width: 100%;">
-      <tbody>`
-}
 
-const EndTimeLineHTML = () => {
-  return ` </tbody>
-    </table>`
-}
 
-const TimeLineHTML = (time1, time2, value1, value2) => {
-  return `
-    <br />
-    <table style="border-collapse: collapse; border: none; width: 100%;">
-      <tbody>
-        <tr>
-          <td style="width: 38pt; vertical-align: text-top">
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-                font-weight: bold;
-              "
-            >
-              ${time1}
-            </p>
-          </td>
-          <td>
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                text-align: justify;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-              "
-            >
-              ${value1}
-            </p>
-          </td>
-        </tr>
-        <tr style="margin-top: 18pt">
-          <td style="width: 38pt; vertical-align: top; display: flex; flex-direction: column; padding: 0">
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-                font-weight: bold;
-              "
-            >
-              ${time2}
-            </p>
-          </td>
-          <td>
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                text-align: justify;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-              "
-            >
-              ${value2}
-            </p>
-          </td>
-        </tr>
-        <tr style="margin-top: 18pt">
-          <td colspan="2">
-            <ul type="square" style="margin: 0pt; 
-             padding-left: 0pt;">
-              <li
-                class="ListParagraph"
-                style="
-                  margin-top: 3pt;
-                  margin-left: 13pt;
-                  margin-bottom: 3pt;
-                  padding-left: 8pt;
-                  -aw-font-family: Roboto;
-                  -aw-font-weight: normal;
-                  -aw-number-format: ;
-                "
-              >
-                <p
-                  style="
-                    line-height: 150%;
-                    font-size: 16px;
-                    text-align: justify;
-                    color: #404040;
-                    margin-top: 0pt;
-                    margin-bottom: 0pt;
-                    font-family: Roboto;
-                  "
-                >
-                  Trên đường đi, đoàn dùng bữa sáng tại nhà hàng Cao Phát. Đoàn sinh hoạt vui chơi trên xe, cùng HDV tìm
-                  hiểu thông tin tuyến điểm tại những vùng đất mà đoàn đi qua.
-                </p>
-              </li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-`
-}
-
-const TemplateTwo = `
-    <table style="border-collapse: collapse; border: none; width: 100%; margin-top: 30pt">
-      <tbody>
-        <tr>
-          <td style="width: 43pt; vertical-align: text-top">
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-                font-weight: bold;
-              "
-            >
-              Sáng:
-            </p>
-          </td>
-          <td>
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                text-align: justify;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-              "
-            >
-              Quý khách dùng bữa sáng tại khách sạn.
-            </p>
-          </td>
-        </tr>
-        <tr style="margin-top: 18pt">
-          <td style="width: 43pt; vertical-align: top; display: flex; flex-direction: column; padding: 0">
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-                font-weight: bold;
-              "
-            >
-              08h00:
-            </p>
-          </td>
-          <td>
-            <p
-              style="
-                line-height: 150%;
-                font-size: 16px;
-                text-align: justify;
-                color: #404040;
-                margin-top: 0pt;
-                margin-bottom: 0pt;
-              "
-            >
-              Khởi hành tham quan vườn hoa Cẩm Tú Cầu, là nơi hội tụ của những cánh đồng hoa Cẩm Tú Cầu bát ngát, loài
-              hoa cánh mỏng manh, chen chúc kề vai nhau tạo thành từng chùm tròn đầy màu sắc, tượng trưng cho lòng biết
-              ơn và những cảm xúc chân thành.
-            </p>
-
-            <ul
-              style="list-style-type: square; padding-inline-start: 0pt; margin-block-start: 0px; margin-block-end: 0px; margin-left: 0px; margin-right: -20pt"
-            >
-              <li>
-                <p
-                  style="
-                    line-height: 150%;
-                    font-size: 16px;
-                    text-align: justify;
-                    color: #404040;
-                    margin-top: 0pt;
-                    margin-bottom: 0pt;
-                  "
-                >
-                  Tham viếng chùa Linh Phước hay còn gọi là chùa “ve chai” bởi trong sân chùa có con rồng dài 49 mét
-                  được trang trí bề mặt bằng cả chục ngàn vỏ chai.
-                </p>
-              </li>
-              <li>
-                <p
-                  style="
-                    line-height: 150%;
-                    font-size: 16px;
-                    text-align: justify;
-                    color: #404040;
-                    margin-top: 0pt;
-                    margin-bottom: 0pt;
-                  "
-                >
-                  Quý khách đến với Đà Lạt View - Cổng trời giữa núi rừng Đà Lạt. Sở hữu tầm nhìn từ trên cao có thể thu
-                  gọn được khung cảnh mơ màng của Đà Lạt vào trong tầm mắt.
-                </p>
-              </li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-`
-
-export { TemplateTwo, FristHTML, EndHTML, HeaderHTML, TimeLineHTML, StartTimeLineHTML, EndTimeLineHTML }
+export {  FristHTML, EndHTML, HeaderHTML,    }

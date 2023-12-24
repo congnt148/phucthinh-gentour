@@ -1,125 +1,105 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button,  TextField } from '@mui/material';
+import { Controller, useFieldArray } from 'react-hook-form';
+import { styled } from '@mui/system';
+import WYSIWYGEditor from '../components/WYSIWYGEditor';
+import TouristAttraction from '../components/tourist-attraction'
+const HeaderTimeText = styled(TextField)({
+  '& .MuiInput-underline:before': {
+    borderBottom: 'none'
+  },
+  '& .MuiInput-underline:hover:before': {
+    borderBottom: 'none'
+  },
+  '& .MuiInput-underline:after': {
+    borderBottom: 'none'
+  },
+  '& .MuiInputBase-input': {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#ff6600'
+  },
+  '& .MuiInputLabel-root': {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#ff6600'
+  }
+});
 
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import { Controller, useFieldArray } from 'react-hook-form'
-import { TOURIST_ATTRACTION } from '../providers/touristAttraction'
 
-const AddTimeLineField = ({ dayIndex, control, getValues, setValue }) => {
+const AddTimeLineField = ({control, dayIndex,  getValues }) => {
+  
   const { fields, append, replace } = useFieldArray({
     control,
     name: `days.${dayIndex}.timeline`
-  })
+  });
 
   return (
     <Box>
       {fields.map((item, index) => (
-        <Box key={item.id} sx={{ flexDirection: 'row', display: 'flex', marginTop: 4 }}>
-          <Box sx={{ flexDirection: 'column', display: 'flex', width: 300 }}>
+        <Box
+          key={item.id}
+          sx={{
+            flexDirection: 'column',
+            display: 'flex',
+            borderRadius: 1,
+            border: '1px solid #D9D9D9',
+            padding: 1,
+            marginBottom: 2
+          }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Controller
               render={({ field }) => (
-                <TextField
+                <HeaderTimeText
+                  variant="standard"
                   {...field}
                   inputProps={{
                     style: { paddingTop: 10, paddingBottom: 10 }
                   }}
-                  placeholder='Thời gian'
+                  placeholder="Thời gian"
                 />
               )}
               name={`days.${dayIndex}.timeline.${index}.time`}
               control={control}
             />
-            <Box mt={1}>
-              <Controller
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    fullWidth
-                    value={value}
-                    sx={{
-                      '.MuiInputBase-input': {
-                        paddingTop: '10px',
-                        paddingBottom: '10px'
-                      }
-                    }}
-                    onChange={event => {
-                      let days = getValues(`days.${dayIndex}.timeline`)
-                      debugger
-                      let item = TOURIST_ATTRACTION.find(i => i.id === event.target.value)
-                      onChange(event.target.value)
-                      if (item) {
-                        days[index].addressContent = item?.content ?? ''
-                      } else {
-                        days[index].addressContent = item?.content ?? ''
-                      }
-                      replace(days)
-                    }}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value=''>
-                      <em>Trống</em>
-                    </MenuItem>
-                    {TOURIST_ATTRACTION.map(item => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-                name={`days.${dayIndex}.timeline.${index}.address`}
-                control={control}
-              />
-            </Box>
-          </Box>
-          <Box ml={1} sx={{ width: '100%' }}>
-            <Controller
+            <Box sx={{ width: '1px', height: 40, background: '#D9D9D9', marginX: 2 }} />
+            <TouristAttraction 
+              dayIndex={dayIndex}
+              timeIndex={index}
+              getValues={getValues}
+              replace={replace}
               control={control}
-              name={`days.${dayIndex}.timeline.${index}.addressContent`}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <TextField
-                    {...field}
-                    multiline
-                    sx={{
-                      padding: 0,
-                      '.MuiOutlinedInput-root': {
-                        paddingTop: 0,
-                        paddingBottom: 1
-                      }
-                    }}
-                    rows={3}
-                    fullWidth
-                    error={!!error}
-                    helperText={error ? error.message : null}
-                    placeholder='Phần nhập nội dung'
-                    inputProps={{
-                      style: { paddingTop: 10, paddingBottom: 10 }
-                    }}
-                  />
-                )
-              }}
             />
           </Box>
+          <Controller
+            control={control}
+            name={`days.${dayIndex}.timeline.${index}.addressContent`}
+            render={({ field, fieldState: { error } }) => {
+              return <WYSIWYGEditor {...field} />;
+            }}
+          />
         </Box>
       ))}
-
-      <Box sx={{ flexDirection: 'row', display: 'flex', marginTop: 2, justifyContent: 'center' }}>
+      <Box sx={{flexDirection: 'row', display: 'flex', justifyContent: 'center', marginTop: 2}}>
         <Button
-          variant='contained'
+          variant="contained"
           onClick={() => {
             append({
               time: '',
-              address: '',
+              address:[],
               addressContent: ''
-            })
+            });
           }}
-          sx={{ color: 'white', textTransform: 'capitalize', backgroundColor: '#ff6600' }}
-        >
-          Thêm
+          sx={{
+            color: 'white',
+            textTransform: 'capitalize',
+            backgroundColor: '#ff6600',
+            borderRadius: 20
+          }}>
+          Thêm thời gian
         </Button>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default AddTimeLineField
+export default AddTimeLineField;
