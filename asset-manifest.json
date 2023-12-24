@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/phucthinh-gentour/static/css/main.e6c13ad2.css",
-    "main.js": "/phucthinh-gentour/static/js/main.58a382ed.js",
+    "main.css": "/phucthinh-gentour/static/css/main.69a081b2.css",
+    "main.js": "/phucthinh-gentour/static/js/main.e1502025.js",
     "index.html": "/phucthinh-gentour/index.html",
-    "main.e6c13ad2.css.map": "/phucthinh-gentour/static/css/main.e6c13ad2.css.map",
-    "main.58a382ed.js.map": "/phucthinh-gentour/static/js/main.58a382ed.js.map"
+    "main.69a081b2.css.map": "/phucthinh-gentour/static/css/main.69a081b2.css.map",
+    "main.e1502025.js.map": "/phucthinh-gentour/static/js/main.e1502025.js.map"
   },
   "entrypoints": [
-    "static/css/main.e6c13ad2.css",
-    "static/js/main.58a382ed.js"
+    "static/css/main.69a081b2.css",
+    "static/js/main.e1502025.js"
   ]
 }
